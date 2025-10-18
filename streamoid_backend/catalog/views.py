@@ -6,6 +6,7 @@ from django.db.models import Q
 from .models import Product
 from django.views.decorators.csrf import csrf_exempt
 
+
 @csrf_exempt
 def upload_csv(request):
     if request.method == 'POST':
@@ -17,21 +18,34 @@ def upload_csv(request):
         reader = csv.DictReader(data)
         stored, failed = 0, []
 
-        for row in reader:
-            try:
-                sku = row['sku']
-                name = row['name']
-                brand = row['brand']
-                mrp = float(row['mrp'])
-                price = float(row['price'])
-                quantity = int(row['quantity'])
-                color = row.get('color', '')
-                size = row.get('size', '')
+        required_fields = ['sku', 'name', 'brand', 'mrp', 'price']
 
-                if price > mrp or quantity < 0:
-                    failed.append(sku)
+        for i, row in enumerate(reader, start=1):
+            try:
+                # Check for missing required fields
+                if not all(field in row and row[field].strip() for field in required_fields):
+                    failed.append({'row': i, 'reason': 'Missing required fields'})
                     continue
 
+                sku = row['sku'].strip()
+                name = row['name'].strip()
+                brand = row['brand'].strip()
+                color = row.get('color', '').strip()
+                size = row.get('size', '').strip() 
+                mrp = float(row['mrp'])
+                price = float(row['price'])
+                quantity = int(row.get('quantity', 0)) if row.get('quantity') else 0
+
+
+                # Validation rules
+                if price > mrp:
+                    failed.append({'row': i, 'sku': sku, 'reason': 'Price exceeds MRP'})
+                    continue
+                if quantity < 0:
+                    failed.append({'row': i, 'sku': sku, 'reason': 'Quantity cannot be negative'})
+                    continue
+
+                # If valid, create or update
                 Product.objects.update_or_create(
                     sku=sku,
                     defaults={
@@ -45,10 +59,17 @@ def upload_csv(request):
                     },
                 )
                 stored += 1
-            except Exception:
-                failed.append(row.get('sku', 'unknown'))
 
-        return JsonResponse({'stored': stored, 'failed': failed})
+            except ValueError as ve:
+                failed.append({'row': i, 'reason': f'Invalid data type - {ve}'})
+            except Exception as e:
+                failed.append({'row': i, 'reason': f'Unexpected error - {e}'})
+
+        return JsonResponse({
+            'stored': stored,
+            'failed_count': len(failed),
+            'failed_rows': failed
+        })
 
     return JsonResponse({'error': 'Use POST method'}, status=405)
 
