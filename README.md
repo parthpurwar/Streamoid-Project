@@ -9,41 +9,42 @@ A lightweight Django REST API containerized with Docker, designed to upload and 
 - Search, filter, and paginate results
 - Fully containerized with Docker Compose
 
-### API Documentation
+# API Documentation
 Base URL
 http://localhost:8000/
 
-1️⃣ Upload CSV
+## 1️⃣ Upload CSV
 
-# Endpoint: 
+### Endpoint: 
 
 - POST /upload/
 
 - Description: Uploads a CSV file and stores the data into the database.
 
-# Request (form-data):
+### Request (form-data):
 
 Key	: file	
 Type : file	
 Description : CSV file to upload
 
-# Response(Success):
+### Response(Success):
 {
     "stored": number of uploads,
     "failed_count": number of failed counts,
     "failed_rows": []
 }
 
-2️⃣ Get Products
+## 2️⃣ Get Products
 
-# Endpoint:
+### Endpoint:
 
 GET /products/
 
 Description:
 Fetches all stored records (from CSV upload).
 
-# Response(Success):
+### Response(Success):
+```
 {
     [
         {
@@ -63,13 +64,14 @@ Fetches all stored records (from CSV upload).
         ...
     ]
 }
+```
 
-### ⚙️ Setup Instructions
+# ⚙️ Setup Instructions
 
 1️⃣ Clone the Repository
 
-git clone https://github.com/<your-username>/streamoid-backend.git
-cd streamoid-backend
+- git clone https://github.com/parthpurwar/Streamoid-Project.git
+- cd streamoid-backend
 
 2️⃣ Build and Run with Docker
 
@@ -77,11 +79,11 @@ docker compose up --build
 
 This will:
 
-Build the Django image
-Start the backend container
-Run the app at: http://localhost:8000/
+- Build the Django image
+- Start the backend container
+- Run the app at: http://localhost:8000/
 
-🧪 Testing the API
+# 🧪 Testing the API
 
 Using Postman
 
@@ -91,7 +93,7 @@ Send a POST request to http://localhost:8000/upload/
 
 Attach a CSV file in the form-data body
 
-### 🧱 Project Structure
+# 🧱 Project Structure
 
 ```
 
@@ -113,6 +115,6 @@ streamoid_backend/
 
 ```
 
-### 🧑‍💻 Author
+# 🧑‍💻 Author
 
 Developed by **Parth**, 3rd-year Electronics Engineering student at **IIT (BHU) Varanasi**, specializing in Artificial Intelligence and Full-Stack Development.
