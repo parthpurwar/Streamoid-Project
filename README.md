@@ -1,37 +1,33 @@
-Streamoid Backend — CSV Upload API
+# Streamoid Backend — CSV Upload API
 
 A lightweight Django REST API containerized with Docker, designed to upload and parse CSV files and store them into the database.
 
-Features
+### Features
 
-Upload and parse CSV files via REST API
+- Upload and parse CSV files via REST API
+- Store parsed data into a Django model (e.g., Product)
+- Search, filter, and paginate results
+- Fully containerized with Docker Compose
 
-Store parsed data into a Django model (e.g., Product)
-
-Search, filter, and paginate results
-
-Fully containerized with Docker Compose
-
-API Documentation
+### API Documentation
 Base URL
 http://localhost:8000/
 
 1️⃣ Upload CSV
 
-Endpoint:
+# Endpoint: 
 
-POST /upload/
+- POST /upload/
 
-Description:
-Uploads a CSV file and stores the data into the database.
+- Description: Uploads a CSV file and stores the data into the database.
 
-Request (form-data):
+# Request (form-data):
 
 Key	: file	
 Type : file	
 Description : CSV file to upload
 
-Response(Success):
+# Response(Success):
 {
     "stored": number of uploads,
     "failed_count": number of failed counts,
@@ -40,14 +36,14 @@ Response(Success):
 
 2️⃣ Get Products
 
-Endpoint:
+# Endpoint:
 
 GET /products/
 
 Description:
 Fetches all stored records (from CSV upload).
 
-Response(Success):
+# Response(Success):
 {
     [
         {
@@ -68,7 +64,7 @@ Response(Success):
     ]
 }
 
-⚙️ Setup Instructions
+### ⚙️ Setup Instructions
 
 1️⃣ Clone the Repository
 
@@ -95,7 +91,9 @@ Send a POST request to http://localhost:8000/upload/
 
 Attach a CSV file in the form-data body
 
-🧱 Project Structure
+### 🧱 Project Structure
+
+```
 
 streamoid_backend/
 │
@@ -113,8 +111,8 @@ streamoid_backend/
     ├── views.py
     └── urls.py
 
-🧑‍💻 Author
+```
 
-Parth
-📧 [parth.purwar.ece23@itbhu.ac.in
-]
+### 🧑‍💻 Author
+
+Developed by **Parth**, 3rd-year Electronics Engineering student at **IIT (BHU) Varanasi**, specializing in Artificial Intelligence and Full-Stack Development.
